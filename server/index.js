@@ -58,6 +58,28 @@ app.put('/api/houses', (req, res) => {
     });
 });
 
+app.post('/api/houses', (req, res) => {
+  // var testHouse = {
+  //   neighborhood : 'Haight',
+  //   home_cost : 1000000,
+  //   bedrooms : 4,
+  //   bathrooms : 2,
+  //   home_address : '22 Cool st',
+  //   sf : 4 * 800, 
+  //   image : '22.jpg'
+
+  // }
+  db.insertHouse(req)
+  .then((response) => console.log(response))
+  .catch((err) => {
+    throw err;
+  })
+})
+
+app.delete('/api/houses', (req, res) => {
+
+})
+
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
