@@ -10,7 +10,7 @@ const app = express();
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'secret',
+  // password: 'xochi',
   database: 'abode',
 });
 
@@ -67,6 +67,32 @@ const getAllNeighborhoodHouses = (neighborhood) => {
   });
 };
 
+const insertHouse = (house) => {
+  return new Promise((resolve, reject) => {
+      const queryStr = `INSERT INTO houses (neighborhood, home_cost, bedrooms, bathrooms, home_address, sf, home_image) VALUES ("${house.neighborhood}", ${house.home_cost}, ${house.bedrooms}, ${house.bathrooms}, "${house.home_address}", ${house.sf}, "${house.home_image}")`
+      connection.query(queryStr, (err, result) =>{
+        if(err) {
+          return reject(err);
+        } 
+        resolve(result);
+      })
+    })
+
+
+}
+
+const deleteHouse = (houseId) => {
+  return new Promise((resolve, reject) => {
+    const queryStr = `DELETE FROM houses WHERE id = "${houseId}"`;
+    connection.query(queryStr, (err, result) => {
+      if(err) {
+        return reject(err); 
+      }
+      resolve(result);
+    })
+  })
+}
+
 const updateHeart = (houseId) => {
   return new Promise((resolve, reject) => {
     const queryStr = `UPDATE houses SET heart_filled = !heart_filled WHERE id = "${houseId}"`;
@@ -97,6 +123,8 @@ module.exports = {
   getAllNeighborhoodData,
   getAllHouseData,
   getAllNeighborhoodHouses,
+  insertHouse,
+  deleteHouse,
   updateHeart,
   getHeartData,
 };

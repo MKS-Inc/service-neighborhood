@@ -58,6 +58,25 @@ app.put('/api/houses', (req, res) => {
     });
 });
 
+app.post('/api/houses', (req, res) => {
+  const house = req.body;
+  db.insertHouse(house)
+  .then((response) => console.log(response))
+  .catch((err) => {
+    throw err;
+  })
+})
+
+app.delete('/api/houses', (req, res) => {
+    db.deleteHouse(req.body.houseId)
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((err) => {
+      throw err;
+    })
+})
+
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
