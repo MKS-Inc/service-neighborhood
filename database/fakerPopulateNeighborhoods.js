@@ -31,8 +31,8 @@ const neighborhoods = [
 
 
 const populateNeighborhoods = () => {
-    let k = 5;
-    while(k < 10){
+    let k = 0;
+    while(k < 5){
 
       fs.writeFile('neighborhood-csv/neighborhoods' + k + '.csv');
 
