@@ -27,7 +27,12 @@ app.get('/api/houses', (req, res) => {
       .catch((err) => {
         throw err;
       });
-  } else if (req.query.houseId) {
+  }
+  
+  //TODO: should make this so that it gets the full house data and change the api route to 
+  //something different to retrieve heart data
+
+   else if (req.query.houseId) {
     db.getHeartData(req.query.houseId)
       .then((results) => res.status(200).json(results))
       .catch((err) => {
@@ -61,7 +66,7 @@ app.put('/api/houses', (req, res) => {
 app.post('/api/houses', (req, res) => {
   const house = req.body;
   db.insertHouse(house)
-  .then((response) => console.log(response))
+  .then((results) => res.status(200).json(results))
   .catch((err) => {
     throw err;
   })
@@ -69,9 +74,7 @@ app.post('/api/houses', (req, res) => {
 
 app.delete('/api/houses', (req, res) => {
     db.deleteHouse(req.body.houseId)
-    .then((response) => {
-      console.log(response);
-    })
+    .then((results) => res.status(200).json(results))
     .catch((err) => {
       throw err;
     })
