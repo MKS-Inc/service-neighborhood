@@ -10,7 +10,7 @@ const app = express();
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  // password: 'xochi',
+ 
   database: 'abode',
 });
 
@@ -46,6 +46,18 @@ const getAllNeighborhoodData = (neighborhood) => {
 const getAllHouseData = () => {
   return new Promise((resolve, reject) => {
     const queryStr = 'SELECT * FROM houses';
+    connection.query(queryStr, (err, result, fields) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(result);
+    });
+  });
+};
+
+const getHouseData = (house_id) => {
+  return new Promise((resolve, reject) => {
+    const queryStr = `SELECT * FROM houses WHERE id = "${house_id}"`;
     connection.query(queryStr, (err, result, fields) => {
       if (err) {
         return reject(err);
@@ -122,6 +134,7 @@ module.exports = {
   getThisNeighborhoodData,
   getAllNeighborhoodData,
   getAllHouseData,
+  getHouseData,
   getAllNeighborhoodHouses,
   insertHouse,
   deleteHouse,

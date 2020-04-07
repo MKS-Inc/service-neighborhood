@@ -1,27 +1,29 @@
-DROP DATABASE IF EXISTS abode;
+DROP DATABASE [IF EXISTS] abode;
 
 CREATE DATABASE abode;
 
-USE abode;
 
-CREATE TABLE neighborhoods (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    neighborhood VARCHAR (20) NOT NULL UNIQUE KEY,
-    transit_score INT NOT NULL,
-    walk_score INT NOT NULL,
-    value_inc_dec_past INT NOT NULL,
-    value_inc_dec_future INT NOT NULL,
-    median_value INT NOT NULL
+
+CREATE TABLE "neighborhoods" (
+    "id" serial  PRIMARY KEY,
+    "neighborhood" VARCHAR (20)  NOT NULL ,
+    "transit_score" INTEGER NOT NULL,
+    "walk_score" INTEGER NOT NULL,
+    "value_inc_dec_past" INTEGER NOT NULL,
+    "value_inc_dec_future" INTEGER NOT NULL,
+    "median_value" INTEGER NOT NULL
 );
 
-CREATE TABLE houses (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    neighborhood VARCHAR (20) NOT NULL,
-    home_cost INT NOT NULL,
-    bedrooms INT NOT NULL,
-    bathrooms INT NOT NULL,
-    home_address VARCHAR (30) NOT NULL,
-    sf INT NOT NULL,
-    home_image VARCHAR (7) NOT NULL,
-    heart_filled BOOLEAN DEFAULT false
+CREATE TABLE "houses" (
+    "id"  serial  PRIMARY KEY,
+   "neighborhood" INTEGER NOT NULL,
+    "home_cost" INTEGER NOT NULL,
+    "bedrooms" INTEGER NOT NULL,
+    "bathrooms" INTEGER NOT NULL,
+    "home_address" VARCHAR (30) NOT NULL,
+    "sf" INTEGER NOT NULL,
+    "home_image" CHAR (7) NOT NULL,
+    "heart_filled" BOOLEAN DEFAULT false
 );
+
+ALTER TABLE "houses" ADD FOREIGN KEY ("neighborhood") REFERENCES "neighborhoods" ("id");
