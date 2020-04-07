@@ -23,11 +23,14 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getHouseData();
+    const url = window.location.href.split('/');
+    const houseId = url[3];
+    this.getHouseData(houseId);
+    
   }
 
-  getNeighborhoodData(neighborhood) {
-    axios.get('/api/neighborhoods', {
+  getNeighborhoodData(neighborhood, houseId) {
+    axios.get(`/api/houses/${houseId}/neighborhoods`, {
       params: {
         name: neighborhood,
       },
@@ -38,32 +41,29 @@ class App extends React.Component {
           house: { ...house },
           houses: response.data,
           neighborhood: response.data[0],
-        });
-        // console.log(response.data[0]);
+        }); 
       })
       .catch((err) => {
         throw err;
       });
   }
 
-  getHouseData() {
-    axios.get('/api/houses')
+  getHouseData(houseId) {
+    axios.get(`/api/houses/${houseId}`, {
+      params : {
+        id : houseId
+      }
+    })
       .then((response) => {
-        const { house, neighborhood } = this.state;
-        if (!Object.keys(house).length) {
+     
+
+        console.log(response.data[0]);
           this.setState({
-            house: response.data[0],
-            houses: response.data,
-            neighborhood: { ...neighborhood },
+            house : response.data[0],
+            neighborhood : response.data[0].neighborhood
           });
-          // console.log(this.state.houses);
-        } else {
-          this.setState({
-            house: { ...house },
-            houses: { ...response.data },
-            neighborhood: { ...neighborhood },
-          });
-        }
+       
+        console.log(this.state.house.neighborhood);
         this.getNeighborhoodData(this.state.house.neighborhood);
       })
       .catch((err) => {
