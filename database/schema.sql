@@ -16,7 +16,7 @@ CREATE TABLE "neighborhoods" (
 
 CREATE TABLE "houses" (
     "id"  serial  PRIMARY KEY,
-   "neighborhood" INTEGER NOT NULL,
+   "neighborhood_id" INTEGER NOT NULL,
     "home_cost" INTEGER NOT NULL,
     "bedrooms" INTEGER NOT NULL,
     "bathrooms" INTEGER NOT NULL,

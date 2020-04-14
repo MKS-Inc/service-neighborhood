@@ -1,4 +1,5 @@
 /* eslint-disable prefer-template */
+require('newrelic');
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('../database');
@@ -15,7 +16,7 @@ app.use(bodyParser.json());
 
 
 app.get('/api/houses/:houseId/neighborhoods', (req, res) => {
-  db.getThisNeighborhoodData(req.query.name)
+  db.getThisNeighborhoodData(req.query.id)
   .then((results) => res.status(200).json(results))
     .catch((err) => {
       throw err;
@@ -23,34 +24,21 @@ app.get('/api/houses/:houseId/neighborhoods', (req, res) => {
   });
 
   app.get('/api/houses/:id', (req, res) => {
-  db.getHouseData(req.params.id)
-    .then((results) => res.send(results))
+  db.getHouseData(req.query.id)
+    .then((results) => res.status(200).json(results))
     .catch((err) => {
       throw err;
     });
 });
 
-app.get('/api/houses', (req, res) => {
-  if (req.query.name) {
-    db.getAllNeighborhoodHouses(req.query.name)
-      .then((results) => res.status(200).json(results))
-      .catch((err) => {
-        throw err;
-      });
-    } else if (req.query.houseId) {
-    db.getHeartData(req.query.houseId)
-    .then((results) => res.status(200).json(results))
-      .catch((err) => {
-        throw err;
-      });
-    } else {
-    db.getAllHouseData()
-      .then((results) => res.status(200).json(results))
-      .catch((err) => {
-        throw err;
-      });
-    }
-});
+app.get('/api/houses/:houseId/nearbyHouses', (req, res) => {
+  db.getAllNeighborhoodHouses(req.query.neighborhood_id)
+  .then((results) => res.status(200).json(results))
+  .catch((err) => {
+    throw err;
+  })
+})
+
 
 
 app.put('/api/houses', (req, res) => {
@@ -82,7 +70,6 @@ app.delete('/api/houses', (req, res) => {
 
 
   app.get('/*', (req,res) => {
-    console.log(req.params);
     res.sendFile(path.resolve(__dirname + '/../client/dist/index.html'));
   })
   

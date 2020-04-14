@@ -24,7 +24,7 @@ class NearbyHomeCard extends React.Component {
 
   componentDidMount() {
     const { id } = this.props;
-    this.getHeartStatus(id);
+    // this.getHeartStatus(id);
   }
 
   getHeartStatus(id) {
@@ -72,11 +72,10 @@ class NearbyHomeCard extends React.Component {
   render() {
     const { home, id } = this.props;
     const { heart } = this.state;
-
     return (
       <div className="houseCard">
         <div className="cardImageContainer">
-          <img src={`https://hrfecimages.s3-us-west-1.amazonaws.com/${home.home_image}`} alt="home" className="cardImage" />
+          <img src={`https://hrfecimages.s3-us-west-1.amazonaws.com/${this.props.home.home_image.slice(1)}`} alt="home" className="cardImage" />
         </div>
         <div onClick={() => this.handleHeartClick(id)}>{heart}</div>
         <div className="cardInfo">

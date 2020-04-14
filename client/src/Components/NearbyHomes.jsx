@@ -11,37 +11,35 @@ class NearbyHomes extends React.Component {
     super(props);
 
     this.state = {
-      nearbyHomes: [],
+      nearbyHomes: this.props.houses,
       position: -162,
       cardCount: 0,
       leftDisabled: true,
       rightDisabled: false,
     };
 
-    this.getHouseData = this.getHouseData.bind(this);
+    // this.getHouseData = this.getHouseData.bind(this);
     this.clickCarouselLeft = this.clickCarouselLeft.bind(this);
     this.clickCarouselRight = this.clickCarouselRight.bind(this);
   }
 
 
-  componentDidMount() {
-    const { neighborhood } = this.props;
+  // componentDidMount() {
+  //   const { neighborhood } = this.props.neighborhood;
+  // }
 
-    this.getHouseData(neighborhood);
-  }
-
-  getHouseData(neighborhood) {
-    Axios.get('/api/houses', {
-      params: {
-        name: neighborhood.neighborhood,
-      },
-    })
-      .then((response) => {
-        this.setState({
-          nearbyHomes: response.data,
-        });
-      });
-  }
+  // getHouseData(neighborhood) {
+  //   Axios.get('/api/houses', {
+  //     params: {
+  //       name: neighborhood.neighborhood,
+  //     },
+  //   })
+  //     .then((response) => {
+  //       this.setState({
+  //         nearbyHomes: response.data,
+  //       });
+  //     });
+  // }
 
   clickCarouselLeft() {
     const { position, cardCount, rightDisabled } = this.state;
@@ -83,13 +81,13 @@ class NearbyHomes extends React.Component {
 
   clickCarouselRight() {
     const {
-      nearbyHomes,
+      // nearbyHomes,
       position,
       cardCount,
       leftDisabled,
     } = this.state;
 
-    if (position - 162 > -162 * nearbyHomes.length) {
+    if (position - 162 > -162 * this.props.houses.length) {
       this.setState({
         position: position - 162,
         cardCount: cardCount + 1,
@@ -103,7 +101,7 @@ class NearbyHomes extends React.Component {
         leftDisabled: false,
       });
     }
-    if (cardCount === nearbyHomes.length - 3) {
+    if (cardCount === this.props.houses.length - 3) {
       this.setState({
         rightDisabled: true,
       });
@@ -113,9 +111,8 @@ class NearbyHomes extends React.Component {
   render() {
     const { nearbyHomes, leftDisabled, rightDisabled } = this.state;
     let allNearby = <div />;
-
-    if (nearbyHomes.length) {
-      allNearby = nearbyHomes.map((home) => <NearbyHomeCard home={home} id={home.id} key={home.id} />);
+    if (this.props.houses.length) {
+      allNearby = this.props.houses.map((home) => <NearbyHomeCard home={home} id={home.id} key={home.id} />);
     }
     return (
       <div className="carouselContainer">
