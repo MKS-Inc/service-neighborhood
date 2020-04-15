@@ -4,9 +4,18 @@
 
 const bodyParser = require('body-parser');
 var pgp = require('pg-promise')();
-var db = pgp('postgres://localhost:5432/abode');
+// var db = pgp('postgres://postgres@18.217.105.14:5432/abode');
 const express = require('express');
+const cn = {
+  host: '18.217.105.14',
+  port: 5432,
+  database: 'abode',
+  user: 'postgres',
+  // password: 'user-password',
+ 
+};
 
+const db = pgp(cn);
 
 const getThisNeighborhoodData = (neighborhood) => {
   return new Promise((resolve, reject) => {

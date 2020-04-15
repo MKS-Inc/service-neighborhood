@@ -58,7 +58,7 @@ class App extends React.Component {
       }
     })
       .then((response) => {
-     
+          console.log(response);
           this.setState({
             house : response.data[0],
           });
@@ -97,6 +97,7 @@ class App extends React.Component {
     let scores = <div />;
     let stats = <div />;
     let seeMore = <div />;
+    console.log(this.state);
     if (Object.keys(neighborhood).length) {
       scores = <Scores neighborhood={neighborhood} />;
       stats = <Stats neighborhood={neighborhood} house={house} />;

@@ -3,8 +3,8 @@ const db = require('./index.js');
 const fs = require('fs');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter; 
 
-const writeHouses = fs.createWriteStream('pgNeighborhoodData.csv');
-writeHouses.write('neighborhood, transit_score ,walk_score, value_inc_dec_past, value_inc_dec_future, median_value\n', 'utf8');
+const writeHouses = fs.createWriteStream('pgHousesData.csv');
+writeHouses.write( 'neighborhood_id, home_cost, bedrooms, bathrooms, home_address, sf, home_image\n', 'utf8');
 
 // 'house_id, neighborhood_id, home_cost, bedrooms, bathrooms, home_address, sf, home_image\n'
 // neighborhood, transit_score ,walk_score, value_inc_dec_past, value_inc_dec_future, median_value\n'
@@ -15,7 +15,7 @@ function writeTenMillionHouses(writer, encoding, callback) {
     const neighborhoodRecords = [];
 
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 1000000; i++) {
       const neighborhood = faker.name.lastName();
       const transitScore = faker.random.number({ min: 70, max: 99 });
       const walkScore = faker.random.number({ min: 70, max: 99 });
@@ -35,13 +35,13 @@ function writeTenMillionHouses(writer, encoding, callback) {
         }
       )
     }
-    let i = 1000000;
-    let neighborhood_id = 0;
+    let i = 10000000;
+    let house_id = 0;
     function write() {
       let ok = true;
       do {
         i -= 1;
-        neighborhood_id += 1;      
+        const neighborhood_id = Math.floor(Math.random() * Math.floor(1000000));      
         const neighborhood = faker.name.lastName();
         const transitScore = faker.random.number({ min: 70, max: 99 });
         const walkScore = faker.random.number({ min: 70, max: 99 });
@@ -60,7 +60,7 @@ function writeTenMillionHouses(writer, encoding, callback) {
         }
         // const neighborhoodName = neighborhood.neighborhood;
         // const neighborhood_id = neighborhood.id;
-        const home_cost = Math.round((Math.floor(neighborhood.median_value * faker.finance.amount(1.10, 1.30, 2))) / 1000) * 1000;
+        const home_cost = Math.round((Math.floor(neighborhoodObj.median_value * faker.finance.amount(1.10, 1.30, 2))) / 1000) * 1000;
         const bedrooms = faker.random.number({ min: 3, max: 6 });
         const bathrooms = bedrooms - faker.random.number({ min: 1, max: 2 });
         const home_address = faker.address.streetName() + ' ' + streetSuff[Math.floor(Math.random() * streetSuff.length)];
@@ -71,7 +71,7 @@ function writeTenMillionHouses(writer, encoding, callback) {
         const value_inc_dec_past = neighborhoodObj.value_inc_dec_past;
         const value_inc_dec_future = neighborhoodObj.value_inc_dec_future;
         const median_value = neighborhoodObj.median_value;
-        const data =`${neighborhood}, ${transit_score}, ${walk_score}, ${value_inc_dec_past}, ${value_inc_dec_future}, ${median_value}\n`
+        const data =`${neighborhood_id}, ${home_cost}, ${bedrooms}, ${bathrooms},${home_address}, ${sf}, ${home_image}\n`
         ;
         // `${neighborhood_id},${home_cost}, ${bedrooms}, ${bathrooms},${home_address}, ${sf}, ${home_image}\n`
           // ${house_id},${neighborhoodName}, ${transit_score}, ${walk_score}, ${value_inc_dec_past}, ${value_inc_dec_future}, ${median_value}
