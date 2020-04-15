@@ -20,55 +20,70 @@ class App extends React.Component {
     };
     this.getHouseData = this.getHouseData.bind(this);
     this.getNeighborhoodData = this.getNeighborhoodData.bind(this);
+    this.getNearbyHousesData = this.getNearbyHousesData.bind(this);
   }
 
   componentDidMount() {
-    this.getHouseData();
+    const url = window.location.href.split('/');
+    const houseId = url[3];
+    this.getHouseData(houseId);
+    
+    
   }
 
-  getNeighborhoodData(neighborhood) {
-    axios.get('/api/neighborhoods', {
+  getNeighborhoodData(neighborhood, houseId) {
+    axios.get(`/api/houses/${houseId}/neighborhoods`, {
       params: {
-        name: neighborhood,
+        id: neighborhood,
       },
     })
       .then((response) => {
+        console.log(response);
         const { house } = this.state;
         this.setState({
-          house: { ...house },
-          houses: response.data,
           neighborhood: response.data[0],
-        });
-        // console.log(response.data[0]);
+        }); 
+        this.getNearbyHousesData(neighborhood, houseId);
+
       })
       .catch((err) => {
         throw err;
       });
   }
 
-  getHouseData() {
-    axios.get('/api/houses')
+  getHouseData(houseId) {
+    axios.get(`/api/houses/${houseId}`, {
+      params : {
+        id : houseId
+      }
+    })
       .then((response) => {
-        const { house, neighborhood } = this.state;
-        if (!Object.keys(house).length) {
+          console.log(response);
           this.setState({
-            house: response.data[0],
-            houses: response.data,
-            neighborhood: { ...neighborhood },
+            house : response.data[0],
           });
-          // console.log(this.state.houses);
-        } else {
-          this.setState({
-            house: { ...house },
-            houses: { ...response.data },
-            neighborhood: { ...neighborhood },
-          });
-        }
-        this.getNeighborhoodData(this.state.house.neighborhood);
+        
+        this.getNeighborhoodData(this.state.house.neighborhood_id, houseId);
       })
       .catch((err) => {
         throw err;
       });
+  }
+
+  getNearbyHousesData(neighborhood_id, houseId){
+    axios.get(`/api/houses/${houseId}/nearbyHouses`, {
+      params : {
+        neighborhood_id : neighborhood_id
+      }
+    })
+    .then((response) => {
+      this.setState({
+        houses : response.data
+      })
+    })
+    .catch((err) => {
+      throw err;
+    })
   }
 
   currentHouse(setHouse) {
@@ -77,20 +92,21 @@ class App extends React.Component {
   }
 
   render() {
-    const { house, neighborhood } = this.state;
+    const { house, houses, neighborhood } = this.state;
     const currentHouse = !Object.keys(house).length ? null : house;
     let scores = <div />;
     let stats = <div />;
     let seeMore = <div />;
+    console.log(this.state);
     if (Object.keys(neighborhood).length) {
       scores = <Scores neighborhood={neighborhood} />;
       stats = <Stats neighborhood={neighborhood} house={house} />;
-      seeMore = <SeeMore neighborhood={neighborhood} />;
+      seeMore = <SeeMore neighborhood={neighborhood} houses = {houses} />;
     }
     return (
       <div id="appContainer">
         <h2 id="neighborhoodHeader">
-          Neighborhood: {currentHouse ? currentHouse.neighborhood : ''}
+          Neighborhood: {currentHouse ? this.state.neighborhood.neighborhood : ''}
         </h2>
         {scores}
         {stats}

@@ -7,7 +7,7 @@ import React from 'react';
 import $ from 'jquery';
 import NearbyHomes from './NearbyHomes.jsx';
 
-const SeeMore = ({ neighborhood }) => {
+const SeeMore = ({ neighborhood, houses }) => {
   const handleSeeMoreClick = () => {
     $('.moreDetails').css({
       'display': 'block',
@@ -44,7 +44,7 @@ const SeeMore = ({ neighborhood }) => {
       <div className="moreDetails">
         <div className="mapouter"><div className="gmap_canvas"><iframe width="452" height="200" id="gmap_canvas" title="map" src="https://maps.google.com/maps?q=noe%20valley&t=k&z=15&ie=UTF8&iwloc=&output=embed" frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0" /></div></div>
         <h3 id="nearbyHomesHeader">Nearby Homes</h3>
-        <div><NearbyHomes neighborhood={neighborhood} /></div>
+        <div><NearbyHomes neighborhood={neighborhood} houses = {houses} /></div>
       </div>
 
       <div className="see" id="less" onClick={handleSeeLessClick}>
