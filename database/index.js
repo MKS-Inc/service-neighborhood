@@ -7,11 +7,11 @@ var pgp = require('pg-promise')();
 // var db = pgp('postgres://postgres@18.217.105.14:5432/abode');
 const express = require('express');
 const cn = {
-  host: '18.217.105.14',
+  host: '3.21.75.46',
   port: 5432,
   database: 'abode',
   user: 'postgres',
-  // password: 'user-password',
+  password: '0atMilk',
  
 };
 

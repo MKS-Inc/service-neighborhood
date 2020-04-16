@@ -68,6 +68,9 @@ app.delete('/api/houses', (req, res) => {
     })
   })
 
+  app.get('/loaderio-ed2ac51dda8739eb41f95749f952019f/', (req,res) => {
+	  res.sendFile(path.resolve(__dirname + '/loaderio-ed2ac51dda8739eb41f95749f952019f.txt'))
+  })
 
   app.get('/*', (req,res) => {
     res.sendFile(path.resolve(__dirname + '/../client/dist/index.html'));
